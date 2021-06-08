@@ -1,0 +1,34 @@
+.PI-Div {
+    display: flex;
+    margin-left: 5px;
+	margin-right: 1px;
+}
+.PI-Div-MemberList {
+    height: 20px;
+}
+.PI-Div-UserPopout,
+.PI-Div-UserPopoutNick {
+    display: inline-block;
+}
+.PI-Div-UserPopout {
+    height: 24px;
+}
+.PI-Div-UserPopoutNick {
+    height: 18px
+}
+.PI-Div-UserModal {
+    height: 20px;
+}
+.PI-Div-FriendsList {
+    height: 17px;
+}
+/* Fix Private Channels */
+.nameAndDecorators-5FJ2dg > .name-uJV0GL {
+	display: flex;
+}
+.PI-Div-PrivateChannel {
+    height: 20px;
+}
+.PI-Div-ActiveNowClick {
+    height: 15px;
+}
