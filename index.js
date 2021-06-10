@@ -7,7 +7,7 @@ import getState from './modules/getState';
 import { defaultSettings } from './constants';
 
 const { headerTagNoNickname, headerTagWithNickname } = getModule('headerTag');
-const { nameTag: nameTagUM } = getModule('nameTag', 'additionalActionsIcon');
+const { nameTagWithCustomStatus, nameTagNoCustomStatus } = getModule('nameTag', 'additionalActionsIcon');
 const { discordTag } = getModule('discordTag', 'friend');
 const { nameTag: nameTagAN } = getModule('nameTag', 'bot');
 
@@ -52,7 +52,7 @@ export default class extends Plugin {
           ? getState(userId, 'UserPopout', 20, 24)
           : (className === headerTagWithNickname && this.settings.get('UPShow', true))
             ? getState(userId, 'UserPopoutNick', 18, 18)
-            : (className === nameTagUM && this.settings.get('UMShow', true))
+            : ((className === nameTagWithCustomStatus || className === nameTagNoCustomStatus) && this.settings.get('UMShow', true))
               ? getState(userId, 'UserModal', 20, 20)
               : (className === discordTag && this.settings.get('FLShow', true))
                 ? getState(userId, 'FriendsList', 12, 17)
