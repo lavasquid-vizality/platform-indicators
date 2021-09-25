@@ -1,21 +1,16 @@
-/* global _ */
+import { isEqual } from 'lodash';
 import React, { memo } from 'react';
 import { getModule } from '@vizality/webpack';
-const Tooltip = getModule(m => m?.displayName === 'Tooltip');
 import { toTitleCase } from '@vizality/util/string';
 
 import { Icons, Colors } from '../constants';
 
+const Tooltip = getModule(m => m.displayName === 'Tooltip');
+
 export const TooltipSVGComponent = memo(({ platform, status, width, height, place }) => {
   return (
     <Tooltip aria-label={false} text={`${status === 'dnd' ? 'DND' : toTitleCase(status)} ${toTitleCase(platform)}`}>{ props => {
-      return (
-        <span className={`PI-Div-${place}-${toTitleCase(platform)}-${toTitleCase(status)}`} {...props}>{
-          <svg viewBox={'0 0 24 24'} className={`PI-${toTitleCase(platform)}-${toTitleCase(status)}`} width={width} height={height}>
-            <path fill={Colors[status]} d={Icons[platform].d}/>
-          </svg>
-        }</span>
-      );
+      return (React.createElement(Icons[platform], { width, height, color: Colors[status], className:`PI-${place}-${toTitleCase(platform)}-${toTitleCase(status)}`, ...props }));
     }}</Tooltip>
   );
 });
@@ -35,7 +30,7 @@ export const DivComponent = memo(({ place, children }) => {
 }, (prevProps, nextProps) => {
   if (prevProps.children.length === nextProps.children.length) {
     for (const [ index, prevPropChildren ] of prevProps.children.entries()) {
-      return _.isEqual(prevPropChildren.props, nextProps.children[index].props);
+      return isEqual(prevPropChildren.props, nextProps.children[index].props);
     }
   }
   return false;

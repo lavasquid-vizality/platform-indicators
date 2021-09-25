@@ -1,8 +1,9 @@
-import { getModule } from '@vizality/webpack';
 import React from 'react';
+import { getModule } from '@vizality/webpack';
+
 import { DivComponent, TooltipSVGComponent, SpaceSVGComponent } from '../components/TooltipDiv';
 
-const { getState } = getModule(m => m?._dispatchToken && m?.isMobileOnline);
+const { getState } = getModule(m => m._dispatchToken && m.isMobileOnline);
 
 function getSVGs (States, place, [ width, height ]) {
   const svgs = [];
