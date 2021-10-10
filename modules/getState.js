@@ -3,7 +3,7 @@ import { getModule } from '@vizality/webpack';
 
 import { DivComponent, TooltipSVGComponent, SpaceSVGComponent } from '../components/TooltipDiv';
 
-const { getState } = getModule(m => m._dispatchToken && m.isMobileOnline);
+const { getState } = getModule(m => m.isMobileOnline);
 
 function getSVGs (States, place, [ width, height ]) {
   const svgs = [];
@@ -16,7 +16,7 @@ function getSVGs (States, place, [ width, height ]) {
 }
 
 export default (userId, place, ...args) => {
-  if (location.pathname === '/vizality/plugins/platform-indicators') {
+  if (location.pathname === '/vizality/plugin/platform-indicators/settings') {
     const svgs = [];
     for (const status of [ 'online', 'idle', 'dnd' ]) {
       for (const platform of [ 'desktop', 'web', 'mobile' ]) {

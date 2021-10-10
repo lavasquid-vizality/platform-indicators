@@ -11,16 +11,8 @@ const { nameTagWithCustomStatus, nameTagNoCustomStatus } = getModule('nameTag', 
 const { discordTag } = getModule('discordTag', 'discriminator');
 const { nameTag: nameTagAN } = getModule('nameTag', 'bot');
 
-function DefaultSettings (settingsSet) {
-  for (const [ key, value ] of Object.entries(defaultSettings)) {
-    settingsSet(key, value);
-  }
-}
-
 export default class extends Plugin {
   start () {
-    if (!this.settings.getKeys().length) DefaultSettings(this.settings.set);
-
     this.injectStyles('./style.css');
     this.patch();
   }
