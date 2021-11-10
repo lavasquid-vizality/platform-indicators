@@ -39,11 +39,11 @@ export default class extends Plugin {
 
       if (userId) {
         const Div = (className === headerTagNoNickname && this.settings.get('UPShow', defaultSettings.UPShow))
-          ? getState(userId, 'UserPopout', 20, 24)
+          ? getState(userId, 'UserPopout', 18, 18)
           : (className === headerTagWithNickname && this.settings.get('UPShow', defaultSettings.UPShow))
-            ? getState(userId, 'UserPopoutNick', 18, 18)
+            ? getState(userId, 'UserPopoutNick', 14, 14)
             : ((className === nameTagWithCustomStatus || className === nameTagNoCustomStatus) && this.settings.get('UMShow', defaultSettings.UMShow))
-              ? (!res.props.className.endsWith(' userModalName') ? res.props.className += ' userModalName' : null, getState(userId, 'UserModal', 20, 20))
+              ? (!res.props.className.endsWith(' userModalName') ? res.props.className += ' userModalName' : null, getState(userId, 'UserModal', 18, 18))
               : (className === discordTag && this.settings.get('FLShow', defaultSettings.FLShow))
                 ? getState(userId, 'FriendsList', 12, 17)
                 : (args[0].discriminator === null && res.props.className === nameTagAN && this.settings.get('ANShow', defaultSettings.ANShow))
@@ -59,9 +59,15 @@ export default class extends Plugin {
     // Private Channels
     patch(getModule(m => m.displayName === 'PrivateChannel').prototype, 'render', (args, res) => {
       const userId = res.props['vz-user-id'];
-      const _name = res.props.name;
 
-      if (userId) res.props.name = <>{[ _name, getState(userId, 'PrivateChannel', 12, 20) ]}</>;
+      if (userId) {
+        const _children = res.props.children;
+        res.props.children = (...args) => {
+          const children = _children(args);
+          children.props.name = <>{[ children.props.name, getState(userId, 'PrivateChannel', 12, 20) ]}</>;
+          return children;
+        };
+      }
 
       return res;
     });
