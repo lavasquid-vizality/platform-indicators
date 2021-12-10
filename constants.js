@@ -8,9 +8,9 @@ export const Icons = Object.freeze({
 });
 
 export const Colors = Object.freeze({
-  online: Constants.HEXColors.STATUS_GREEN_600,
-  idle: Constants.HEXColors.STATUS_YELLOW,
-  dnd: Constants.HEXColors.STATUS_RED
+  online: Constants.Colors.STATUS_GREEN_600,
+  idle: Constants.Colors.STATUS_YELLOW,
+  dnd: Constants.Colors.STATUS_RED
 });
 
 export const defaultSettings = Object.freeze({
