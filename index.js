@@ -4,14 +4,14 @@ import { patch } from '@vizality/patcher';
 import { getModule } from '@vizality/webpack';
 
 import getState from './modules/getState';
-import { defaultSettings } from './constants';
+import { DefaultSettings } from './constants';
 
 const { headerTagNoNickname, headerTagWithNickname } = getModule('headerTag');
 const { nameTagWithCustomStatus, nameTagNoCustomStatus } = getModule('nameTag', 'additionalActionsIcon');
 const { discordTag } = getModule('discordTag', 'discriminator');
 const { nameTag: nameTagAN } = getModule('nameTag', 'bot');
 
-export default class extends Plugin {
+export default class PlatformIndicators extends Plugin {
   start () {
     this.injectStyles('./style.css');
     this.patch();
@@ -20,7 +20,7 @@ export default class extends Plugin {
   patch () {
     // Member List
     patch(getModule(m => m.displayName === 'MemberListItem').prototype, 'renderDecorators', (args, res, _this) => {
-      if (!this.settings.get('MLShow', defaultSettings.MLShow)) return res;
+      if (!this.settings.get('MLShow', DefaultSettings.MLShow)) return res;
 
       const { id: userId } = _this.props.user;
 
@@ -38,15 +38,15 @@ export default class extends Plugin {
       const { userId, className } = args[0];
 
       if (userId) {
-        const Div = (className === headerTagNoNickname && this.settings.get('UPShow', defaultSettings.UPShow))
+        const Div = (className === headerTagNoNickname && this.settings.get('UPShow', DefaultSettings.UPShow))
           ? getState(userId, 'UserPopout', 18, 18)
-          : (className === headerTagWithNickname && this.settings.get('UPShow', defaultSettings.UPShow))
+          : (className === headerTagWithNickname && this.settings.get('UPShow', DefaultSettings.UPShow))
             ? getState(userId, 'UserPopoutNick', 14, 14)
-            : ((className === nameTagWithCustomStatus || className === nameTagNoCustomStatus) && this.settings.get('UMShow', defaultSettings.UMShow))
+            : ((className === nameTagWithCustomStatus || className === nameTagNoCustomStatus) && this.settings.get('UMShow', DefaultSettings.UMShow))
               ? (!res.props.className.endsWith(' userModalName') ? res.props.className += ' userModalName' : null, getState(userId, 'UserModal', 18, 18))
-              : (className === discordTag && this.settings.get('FLShow', defaultSettings.FLShow))
+              : (className === discordTag && this.settings.get('FLShow', DefaultSettings.FLShow))
                 ? getState(userId, 'FriendsList', 12, 17)
-                : (args[0].discriminator === null && res.props.className === nameTagAN && this.settings.get('ANShow', defaultSettings.ANShow))
+                : (args[0].discriminator === null && res.props.className === nameTagAN && this.settings.get('ANShow', DefaultSettings.ANShow))
                   ? getState(userId, 'ActiveNowClick', 12, 15)
                   : null;
 

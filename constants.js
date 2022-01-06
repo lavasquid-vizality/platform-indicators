@@ -13,7 +13,7 @@ export const Colors = Object.freeze({
   dnd: Constants.Colors.STATUS_RED
 });
 
-export const defaultSettings = Object.freeze({
+export const DefaultSettings = Object.freeze({
   MLShow: true,
   UPShow: true,
   UMShow: true,
