@@ -6,8 +6,9 @@ import { getModule } from '@vizality/webpack';
 import getState from './modules/getState';
 import { DefaultSettings } from './constants';
 
+const { getChannel } = getModule(m => m.getChannel && m.hasChannel);
+
 const { headerTagNoNickname, headerTagWithNickname } = getModule('headerTag');
-const { nameTagWithCustomStatus, nameTagNoCustomStatus } = getModule('nameTag', 'additionalActionsIcon');
 const { discordTag } = getModule('discordTag', 'discriminator');
 const { nameTag: nameTagAN } = getModule('nameTag', 'bot');
 
@@ -31,10 +32,12 @@ export default class PlatformIndicators extends Plugin {
     });
 
     // Name Tag (User Popout & User Modal & Friends List & Active Now)
-    patch(getModule(m => m.default?.displayName === 'DiscordTag'), 'default', (args, res) => {
+    patch(getModule(m => m.default?.displayName === 'DiscordTag'), 'default', args => {
       args[0].userId = args[0].user.id;
     }, 'before');
     patch(getModule(m => m.default?.displayName === 'NameTag'), 'default', (args, res) => {
+      const { nameTagWithCustomStatus, nameTagNoCustomStatus } = getModule('nameTag', 'additionalActionsIcon') ?? {};
+
       const { userId, className } = args[0];
 
       if (userId) {
@@ -58,13 +61,13 @@ export default class PlatformIndicators extends Plugin {
 
     // Private Channels
     patch(getModule(m => m.displayName === 'PrivateChannel').prototype, 'render', (args, res) => {
-      const userId = res.props['vz-user-id'];
+      const channel = getChannel(res.props.id);
 
-      if (userId) {
+      if (channel.isDM()) {
         const _children = res.props.children;
         res.props.children = (...args) => {
           const children = _children(args);
-          children.props.name = <>{[ children.props.name, getState(userId, 'PrivateChannel', 12, 20) ]}</>;
+          children.props.name = <>{[ children.props.name, getState(channel.recipients[0], 'PrivateChannel', 12, 20) ]}</>;
           return children;
         };
       }

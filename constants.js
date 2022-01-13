@@ -3,7 +3,7 @@ import { getModule } from '@vizality/webpack';
 
 export const Icons = Object.freeze({
   desktop: getModule(m => m.displayName === 'Monitor'),
-  web: getModule(m => m.displayName === 'Public'),
+  web: getModule(m => m.displayName === 'Globe'),
   mobile: getModule(m => m.displayName === 'MobileDevice')
 });
 
