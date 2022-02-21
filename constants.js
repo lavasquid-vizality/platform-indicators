@@ -1,5 +1,6 @@
-import { Constants } from '@vizality/discord/constants';
 import { getModule } from '@vizality/webpack';
+
+const Constants = getModule(m => m.API_HOST);
 
 export const Icons = Object.freeze({
   desktop: getModule(m => m.displayName === 'Monitor'),

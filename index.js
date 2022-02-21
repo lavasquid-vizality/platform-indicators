@@ -11,6 +11,7 @@ const { getChannel } = getModule(m => m.getChannel && m.hasChannel);
 const { headerTagNoNickname, headerTagWithNickname } = getModule('headerTag');
 const { discordTag } = getModule('discordTag', 'discriminator');
 const { nameTag: nameTagAN } = getModule('nameTag', 'bot');
+let { nameTagNoCustomStatus, nameTagWithCustomStatus } = getModule('nameTag', 'additionalActionsIcon') ?? {};
 
 export default class PlatformIndicators extends Plugin {
   start () {
@@ -36,20 +37,20 @@ export default class PlatformIndicators extends Plugin {
       args[0].userId = args[0].user.id;
     }, 'before');
     patch(getModule(m => m.default?.displayName === 'NameTag'), 'default', (args, res) => {
-      const { nameTagWithCustomStatus, nameTagNoCustomStatus } = getModule('nameTag', 'additionalActionsIcon') ?? {};
+      if (!nameTagNoCustomStatus) ({ nameTagNoCustomStatus, nameTagWithCustomStatus } = getModule('nameTag', 'additionalActionsIcon') ?? {});
 
       const { userId, className } = args[0];
 
       if (userId) {
-        const Div = (className === headerTagNoNickname && this.settings.get('UPShow', DefaultSettings.UPShow))
+        const Div = className === headerTagNoNickname && this.settings.get('UPShow', DefaultSettings.UPShow)
           ? getState(userId, 'UserPopout', 18, 18)
-          : (className === headerTagWithNickname && this.settings.get('UPShow', DefaultSettings.UPShow))
+          : className === headerTagWithNickname && this.settings.get('UPShow', DefaultSettings.UPShow)
             ? getState(userId, 'UserPopoutNick', 14, 14)
-            : ((className === nameTagWithCustomStatus || className === nameTagNoCustomStatus) && this.settings.get('UMShow', DefaultSettings.UMShow))
+            : (className === nameTagNoCustomStatus || className === nameTagWithCustomStatus) && this.settings.get('UMShow', DefaultSettings.UMShow)
               ? (!res.props.className.endsWith(' userModalName') ? res.props.className += ' userModalName' : null, getState(userId, 'UserModal', 18, 18))
-              : (className === discordTag && this.settings.get('FLShow', DefaultSettings.FLShow))
+              : className === discordTag && this.settings.get('FLShow', DefaultSettings.FLShow)
                 ? getState(userId, 'FriendsList', 12, 17)
-                : (args[0].discriminator === null && res.props.className === nameTagAN && this.settings.get('ANShow', DefaultSettings.ANShow))
+                : args[0].discriminator === null && res.props.className === nameTagAN && this.settings.get('ANShow', DefaultSettings.ANShow)
                   ? getState(userId, 'ActiveNowClick', 12, 15)
                   : null;
 
