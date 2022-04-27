@@ -20,16 +20,21 @@ export default class PlatformIndicators extends Plugin {
   }
 
   patch () {
-    // Member List
-    patch(getModule(m => m.displayName === 'MemberListItem').prototype, 'renderDecorators', (args, res, _this) => {
-      if (!this.settings.get('MLShow', DefaultSettings.MLShow)) return res;
+    // Member List Item
+    const MemberListItem = patch(getModule(m => m.AVATAR_DECORATION_PADDING).default, 'type', (args, res) => {
+      // Decorators
+      patch(res.type.prototype, 'renderDecorators', (args, res, _this) => {
+        if (!this.settings.get('MLShow', DefaultSettings.MLShow)) return res;
 
-      const { id: userId } = _this.props.user;
+        const { id: userId } = _this.props.user;
 
-      const Div = getState(userId, 'MemberList', 12, 20);
-      if (Div) res.props.children.splice(0, 0, Div);
+        const Div = getState(userId, 'MemberList', 12, 20);
+        if (Div) res.props.children.splice(0, 0, Div);
 
-      return res;
+        return res;
+      });
+
+      MemberListItem();
     });
 
     // Name Tag (User Popout & User Modal & Friends List & Active Now)
