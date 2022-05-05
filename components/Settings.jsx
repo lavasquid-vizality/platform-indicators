@@ -5,8 +5,8 @@ import { getModule } from '@vizality/webpack';
 
 import { DefaultSettings } from '../constants';
 
-const MemberListItem = getModule(m => m.displayName === 'MemberListItem');
-const UserMention = getModule(m => m.displayName === 'UserMention');
+const MemberListItem = getModule(m => m.AVATAR_DECORATION_PADDING).default;
+const UserMention = getModule(m => m.default?.toString().includes('e.inlinePreview') && m.default.displayName !== 'RoleMention').default;
 const PreviewMLItem = createRef();
 
 const { getCurrentUser } = getModule(m => m.getCurrentUser);
